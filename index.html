@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Automated Timetable Generator</title>
+  <style>
+/* =============================================
+   AUTOMATED TIMETABLE GENERATOR - style.css
+   BCA Project
+   ============================================= */
+
+:root {
+  --primary:     #1a56db;
+  --primary-dk:  #1245b5;
+  --primary-lt:  #e8f0fe;
+  --accent:      #0ea5e9;
+  --success:     #16a34a;
+  --success-lt:  #dcfce7;
+  --danger:      #dc2626;
+  --danger-lt:   #fee2e2;
+  --warning:     #d97706;
+  --warning-lt:  #fef3c7;
+  --text-dark:   #111827;
+  --text-mid:    #374151;
+  --text-soft:   #6b7280;
+  --text-hint:   #9ca3af;
+  --bg:          #f3f4f6;
+  --surface:     #ffffff;
+  --border:      #e5e7eb;
+  --border-md:   #d1d5db;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:   0 4px 12px rgba(0,0,0,0.1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: var(--primary);
+  color: white;
+  padding: 1.2rem 0;
+  box-shadow: var(--shadow-md);
+}
+.header-inner {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.logo-icon { font-size: 1.8rem; }
+.logo-accent { color: #93c5fd; }
+.header-sub { font-size: 13px; opacity: 0.85; font-style: italic; }
+
+/* CONTAINER */
+.container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+  background: var(--surface);
+  padding: 6px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+.tab-btn {
+  flex: 1;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-btn:hover { background: var(--bg); color: var(--text-dark); }
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(26,86,219,0.3);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* GRID */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 768px) {
+  .grid-3 { grid-template-columns: 1fr; }
+  .assign-form { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* CARD */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.2rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1rem;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.card-header h3 { font-size: 15px; font-weight: 700; color: var(--text-dark); }
+
+/* BADGE */
+.badge {
+  background: var(--primary-lt);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 20px;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* FORM */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 8px 11px;
+  border: 1px solid var(--border-md);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  color: var(--text-dark);
+  background: var(--surface);
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26,86,219,0.12);
+}
+label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-soft);
+  margin-bottom: 3px;
+  display: block;
+}
+
+/* BUTTONS */
+.btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border-md);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-dark);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn:hover { background: var(--bg); }
+.btn:active { transform: scale(0.97); }
+.btn-add { background: var(--primary-lt); color: var(--primary); border-color: #bfdbfe; }
+.btn-add:hover { background: #dbeafe; }
+.btn-primary { background: var(--primary); color: white; border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-dk); }
+.btn-outline { border-color: var(--primary); color: var(--primary); }
+.btn-outline:hover { background: var(--primary-lt); }
+.btn-danger-sm {
+  font-size: 12px; padding: 4px 10px; color: var(--danger);
+  border: 1px solid #fca5a5; background: transparent;
+  border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; transition: all 0.15s;
+}
+.btn-danger-sm:hover { background: var(--danger-lt); }
+
+/* ITEM LIST */
+.item-list {
+  list-style: none;
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.item-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 13px;
+  gap: 6px;
+}
+.item-name { font-weight: 600; flex: 1; color: var(--text-dark); }
+.item-sub  { font-size: 11.5px; color: var(--text-soft); }
+.item-actions { display: flex; gap: 4px; }
+.btn-icon {
+  background: none; border: none; cursor: pointer;
+  font-size: 14px; padding: 3px 5px;
+  border-radius: 4px; transition: background 0.15s;
+}
+.btn-edit:hover { background: #dbeafe; }
+.btn-del:hover  { background: var(--danger-lt); }
+
+/* INFO BOX */
+.info-box {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 13.5px;
+  color: #1e40af;
+  line-height: 1.7;
+}
+
+/* ASSIGN FORM */
+.assign-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+.form-field { display: flex; flex-direction: column; }
+.form-field-btn { justify-content: flex-end; }
+.form-field-btn .btn { width: 100%; padding: 9px; }
+
+/* CONFLICT BOX */
+.conflict-box {
+  background: var(--danger-lt);
+  border: 1px solid #fca5a5;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--danger);
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+/* ASSIGNED SLOT ITEMS */
+#assigned-list .slot-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 6px;
+  background: var(--surface);
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.slot-info { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.slot-day  { font-weight: 700; color: var(--primary); font-size: 13px; min-width: 70px; }
+.slot-time { font-size: 12px; color: var(--text-soft); min-width: 100px; }
+.slot-pill { font-size: 12px; padding: 3px 9px; border-radius: 20px; font-weight: 600; }
+.pill-sub  { background: #dbeafe; color: #1e40af; }
+.pill-tch  { background: var(--success-lt); color: var(--success); }
+.pill-room { background: var(--warning-lt); color: var(--warning); }
+.empty-msg { font-size: 13.5px; color: var(--text-hint); padding: 1rem 0; }
+
+/* TIMETABLE TOOLBAR */
+.timetable-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}
+.toolbar-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* TIMETABLE TABLE */
+#timetable-output {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.2rem;
+  overflow-x: auto;
+}
+.tt-class-title {
+  text-align: center; font-size: 18px;
+  font-weight: 700; color: var(--text-dark); margin-bottom: 4px;
+}
+.tt-date { text-align: center; font-size: 12px; color: var(--text-soft); margin-bottom: 1rem; }
+
+table.tt-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px; min-width: 700px;
+}
+table.tt-table th {
+  background: var(--primary); color: white;
+  padding: 10px 8px; text-align: center;
+  font-weight: 700; font-size: 13px;
+}
+table.tt-table td {
+  border: 1px solid var(--border);
+  padding: 6px 5px; text-align: center;
+  vertical-align: middle; min-width: 110px;
+}
+table.tt-table td.time-cell {
+  background: #f8fafc; font-size: 12px;
+  font-weight: 700; color: var(--text-soft);
+  white-space: nowrap; min-width: 100px;
+  border-right: 2px solid var(--border-md);
+}
+table.tt-table tr:hover td:not(.time-cell) { background: #f0f4ff; }
+table.tt-table td.lunch-cell {
+  background: #fef9c3; color: #92400e;
+  font-weight: 600; font-size: 12px; font-style: italic;
+}
+.tt-slot {
+  background: var(--primary-lt);
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 5px 6px; font-size: 12px; line-height: 1.45;
+}
+.tt-slot-sub  { font-weight: 700; color: var(--primary); }
+.tt-slot-tch  { color: var(--success); font-size: 11px; }
+.tt-slot-room { color: var(--warning); font-size: 11px; }
+.tt-free      { color: var(--text-hint); font-size: 11px; }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex; align-items: center;
+  justify-content: center; z-index: 1000;
+}
+.modal-box {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem; width: 340px;
+  max-width: 90vw; box-shadow: var(--shadow-md);
+}
+.modal-box h3 { font-size: 16px; margin-bottom: 1rem; }
+.modal-btns { display: flex; gap: 8px; margin-top: 12px; }
+
+/* FOOTER */
+.footer {
+  text-align: center; padding: 1.5rem;
+  font-size: 13px; color: var(--text-hint);
+  border-top: 1px solid var(--border); margin-top: 2rem;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 10px; }
+
+@media print {
+  .header, .tabs, .timetable-toolbar, .footer { display: none !important; }
+  .tab-content { display: block !important; }
+  #tab-setup, #tab-assign { display: none !important; }
+  body { background: white; }
+}
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">&#9635;</span>
+        <span class="logo-text">TimeTable <span class="logo-accent">Pro</span></span>
+      </div>
+      <p class="header-sub">Automated College Timetable Generator</p>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTAINER ===== -->
+  <div class="container">
+
+    <!-- ===== TABS NAV ===== -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('setup', this)">&#9881; Setup</button>
+      <button class="tab-btn" onclick="showTab('assign', this)">&#9997; Assign Slots</button>
+      <button class="tab-btn" onclick="showTab('timetable', this)">&#128197; Timetable</button>
+    </div>
+
+    <!-- ==================== TAB 1: SETUP ==================== -->
+    <div id="tab-setup" class="tab-content active">
+      <div class="grid-3">
+
+        <!-- SUBJECTS CARD -->
+        <div class="card">
+          <div class="card-header">
+            <h3>&#128218; Subjects</h3>
+            <span class="badge" id="subject-count">0</span>
+          </div>
+          <div class="form-group">
+            <input type="text" id="subject-input" placeholder="e.g. Mathematics" />
+            <input type="text" id="subject-code" placeholder="Code e.g. MATH101" />
+            <button class="btn btn-add" onclick="addSubject()">+ Add</button>
+          </div>
+          <ul class="item-list" id="subject-list"></ul>
+        </div>
+
+        <!-- TEACHERS CARD -->
+        <div class="card">
+          <div class="card-header">
+            <h3>&#128105;&#8205;&#127979; Teachers</h3>
+            <span class="badge" id="teacher-count">0</span>
+          </div>
+          <div class="form-group">
+            <input type="text" id="teacher-input" placeholder="e.g. Dr. Sharma" />
+            <input type="text" id="teacher-subject" placeholder="Subject they teach" />
+            <button class="btn btn-add" onclick="addTeacher()">+ Add</button>
+          </div>
+          <ul class="item-list" id="teacher-list"></ul>
+        </div>
+
+        <!-- ROOMS CARD -->
+        <div class="card">
+          <div class="card-header">
+            <h3>&#127981; Rooms</h3>
+            <span class="badge" id="room-count">0</span>
+          </div>
+          <div class="form-group">
+            <input type="text" id="room-input" placeholder="e.g. Room 101" />
+            <input type="number" id="room-capacity" placeholder="Capacity e.g. 60" />
+            <button class="btn btn-add" onclick="addRoom()">+ Add</button>
+          </div>
+          <ul class="item-list" id="room-list"></ul>
+        </div>
+
+      </div>
+
+      <!-- INFO BOX -->
+      <div class="info-box" id="info-box">
+        <strong>&#128161; How to use:</strong>
+        Step 1 &rarr; Add Subjects, Teachers &amp; Rooms here.
+        Step 2 &rarr; Go to <em>Assign Slots</em> tab to build your timetable.
+        Step 3 &rarr; View the final timetable in the <em>Timetable</em> tab.
+      </div>
+    </div>
+
+    <!-- ==================== TAB 2: ASSIGN SLOTS ==================== -->
+    <div id="tab-assign" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h3>&#9997; Assign a Slot</h3>
+        </div>
+        <div class="assign-form">
+          <div class="form-field">
+            <label>Day</label>
+            <select id="sel-day">
+              <option value="">-- Select Day --</option>
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Time Slot</label>
+            <select id="sel-time">
+              <option value="">-- Select Time --</option>
+              <option>9:00 - 10:00</option>
+              <option>10:00 - 11:00</option>
+              <option>11:00 - 12:00</option>
+              <option>12:00 - 1:00 (Lunch)</option>
+              <option>1:00 - 2:00</option>
+              <option>2:00 - 3:00</option>
+              <option>3:00 - 4:00</option>
+              <option>4:00 - 5:00</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Subject</label>
+            <select id="sel-subject">
+              <option value="">-- Select Subject --</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Teacher</label>
+            <select id="sel-teacher">
+              <option value="">-- Select Teacher --</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Room</label>
+            <select id="sel-room">
+              <option value="">-- Select Room --</option>
+            </select>
+          </div>
+          <div class="form-field form-field-btn">
+            <button class="btn btn-primary" onclick="assignSlot()">&#10003; Assign</button>
+          </div>
+        </div>
+        <div class="conflict-box" id="conflict-box" style="display:none;"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>&#128203; Assigned Slots</h3>
+          <button class="btn btn-danger-sm" onclick="clearAllSlots()">&#128465; Clear All</button>
+        </div>
+        <div id="assigned-list">
+          <p class="empty-msg">No slots assigned yet. Use the form above.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: TIMETABLE ==================== -->
+    <div id="tab-timetable" class="tab-content">
+      <div class="timetable-toolbar">
+        <div>
+          <label>Class / Section: </label>
+          <input type="text" id="class-name" placeholder="e.g. BCA Sem 3 - A" style="width:200px;" />
+        </div>
+        <div class="toolbar-btns">
+          <button class="btn btn-primary" onclick="generateTimetable()">&#128197; Generate</button>
+          <button class="btn btn-outline" onclick="printTimetable()">&#128424; Print</button>
+          <button class="btn btn-outline" onclick="exportCSV()">&#128190; Export CSV</button>
+        </div>
+      </div>
+      <div id="timetable-output">
+        <p class="empty-msg" style="text-align:center; padding:3rem 0;">
+          Click <strong>Generate</strong> to view timetable.
+        </p>
+      </div>
+    </div>
+
+  </div><!-- end container -->
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Automated Timetable Generator &mdash; BCA Project &copy; 2025</p>
+  </footer>
+
+  <!-- EDIT MODAL -->
+  <div id="edit-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+      <h3 id="modal-title">Edit Item</h3>
+      <div class="form-group">
+        <input type="text" id="modal-name" placeholder="Name" />
+        <input type="text" id="modal-extra" placeholder="Code / Subject / Capacity" />
+      </div>
+      <div class="modal-btns">
+        <button class="btn btn-primary" onclick="saveEdit()">Save</button>
+        <button class="btn" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+/* =============================================
+   AUTOMATED TIMETABLE GENERATOR - script.js
+   BCA Project
+   ============================================= */
+
+/* ---- DATA STORE ---- */
+let subjects = [];
+let teachers = [];
+let rooms    = [];
+let slots    = [];
+
+let editType  = "";
+let editIndex = -1;
+
+/* ---- TAB SWITCHING ---- */
+// Fixed: now receives the button element as a parameter instead of relying on event object
+function showTab(tabName, btnEl) {
+  document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("tab-" + tabName).classList.add("active");
+  btnEl.classList.add("active");
+  if (tabName === "assign") refreshAssignDropdowns();
+}
+
+/* ---- SUBJECTS ---- */
+function addSubject() {
+  const name = document.getElementById("subject-input").value.trim();
+  const code = document.getElementById("subject-code").value.trim();
+  if (!name) { alert("Please enter subject name!"); return; }
+  subjects.push({ id: Date.now(), name, code: code || "N/A" });
+  document.getElementById("subject-input").value = "";
+  document.getElementById("subject-code").value  = "";
+  renderSubjects();
+  updateBadges();
+}
+
+function deleteSubject(index) {
+  if (!confirm("Delete this subject?")) return;
+  subjects.splice(index, 1);
+  renderSubjects();
+  updateBadges();
+}
+
+function editSubject(index) {
+  editType  = "subject";
+  editIndex = index;
+  document.getElementById("modal-title").textContent    = "Edit Subject";
+  document.getElementById("modal-name").value           = subjects[index].name;
+  document.getElementById("modal-extra").value          = subjects[index].code;
+  document.getElementById("modal-extra").placeholder    = "Subject Code";
+  document.getElementById("edit-modal").style.display   = "flex";
+}
+
+function renderSubjects() {
+  const ul = document.getElementById("subject-list");
+  if (subjects.length === 0) {
+    ul.innerHTML = '<li class="empty-msg">No subjects added yet.</li>';
+    return;
+  }
+  ul.innerHTML = subjects.map((s, i) => `
+    <li>
+      <div>
+        <div class="item-name">${s.name}</div>
+        <div class="item-sub">Code: ${s.code}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn-icon btn-edit" onclick="editSubject(${i})">&#9998;</button>
+        <button class="btn-icon btn-del"  onclick="deleteSubject(${i})">&#10005;</button>
+      </div>
+    </li>`).join("");
+}
+
+/* ---- TEACHERS ---- */
+function addTeacher() {
+  const name    = document.getElementById("teacher-input").value.trim();
+  const subject = document.getElementById("teacher-subject").value.trim();
+  if (!name) { alert("Please enter teacher name!"); return; }
+  teachers.push({ id: Date.now(), name, subject: subject || "General" });
+  document.getElementById("teacher-input").value   = "";
+  document.getElementById("teacher-subject").value = "";
+  renderTeachers();
+  updateBadges();
+}
+
+function deleteTeacher(index) {
+  if (!confirm("Delete this teacher?")) return;
+  teachers.splice(index, 1);
+  renderTeachers();
+  updateBadges();
+}
+
+function editTeacher(index) {
+  editType  = "teacher";
+  editIndex = index;
+  document.getElementById("modal-title").textContent  = "Edit Teacher";
+  document.getElementById("modal-name").value         = teachers[index].name;
+  document.getElementById("modal-extra").value        = teachers[index].subject;
+  document.getElementById("modal-extra").placeholder  = "Subject they teach";
+  document.getElementById("edit-modal").style.display = "flex";
+}
+
+function renderTeachers() {
+  const ul = document.getElementById("teacher-list");
+  if (teachers.length === 0) {
+    ul.innerHTML = '<li class="empty-msg">No teachers added yet.</li>';
+    return;
+  }
+  ul.innerHTML = teachers.map((t, i) => `
+    <li>
+      <div>
+        <div class="item-name">${t.name}</div>
+        <div class="item-sub">Teaches: ${t.subject}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn-icon btn-edit" onclick="editTeacher(${i})">&#9998;</button>
+        <button class="btn-icon btn-del"  onclick="deleteTeacher(${i})">&#10005;</button>
+      </div>
+    </li>`).join("");
+}
+
+/* ---- ROOMS ---- */
+function addRoom() {
+  const name     = document.getElementById("room-input").value.trim();
+  const capacity = document.getElementById("room-capacity").value.trim();
+  if (!name) { alert("Please enter room name!"); return; }
+  rooms.push({ id: Date.now(), name, capacity: capacity || "0" });
+  document.getElementById("room-input").value    = "";
+  document.getElementById("room-capacity").value = "";
+  renderRooms();
+  updateBadges();
+}
+
+function deleteRoom(index) {
+  if (!confirm("Delete this room?")) return;
+  rooms.splice(index, 1);
+  renderRooms();
+  updateBadges();
+}
+
+function editRoom(index) {
+  editType  = "room";
+  editIndex = index;
+  document.getElementById("modal-title").textContent  = "Edit Room";
+  document.getElementById("modal-name").value         = rooms[index].name;
+  document.getElementById("modal-extra").value        = rooms[index].capacity;
+  document.getElementById("modal-extra").placeholder  = "Capacity";
+  document.getElementById("edit-modal").style.display = "flex";
+}
+
+function renderRooms() {
+  const ul = document.getElementById("room-list");
+  if (rooms.length === 0) {
+    ul.innerHTML = '<li class="empty-msg">No rooms added yet.</li>';
+    return;
+  }
+  ul.innerHTML = rooms.map((r, i) => `
+    <li>
+      <div>
+        <div class="item-name">${r.name}</div>
+        <div class="item-sub">Capacity: ${r.capacity}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn-icon btn-edit" onclick="editRoom(${i})">&#9998;</button>
+        <button class="btn-icon btn-del"  onclick="deleteRoom(${i})">&#10005;</button>
+      </div>
+    </li>`).join("");
+}
+
+/* ---- EDIT MODAL ---- */
+function saveEdit() {
+  const name  = document.getElementById("modal-name").value.trim();
+  const extra = document.getElementById("modal-extra").value.trim();
+  if (!name) { alert("Name cannot be empty!"); return; }
+  if (editType === "subject") {
+    subjects[editIndex].name = name;
+    subjects[editIndex].code = extra || "N/A";
+    renderSubjects();
+  } else if (editType === "teacher") {
+    teachers[editIndex].name    = name;
+    teachers[editIndex].subject = extra || "General";
+    renderTeachers();
+  } else if (editType === "room") {
+    rooms[editIndex].name     = name;
+    rooms[editIndex].capacity = extra || "0";
+    renderRooms();
+  }
+  closeModal();
+  updateBadges();
+}
+
+function closeModal() {
+  document.getElementById("edit-modal").style.display = "none";
+}
+
+document.getElementById("edit-modal").addEventListener("click", function(e) {
+  if (e.target === this) closeModal();
+});
+
+/* ---- BADGES ---- */
+function updateBadges() {
+  document.getElementById("subject-count").textContent = subjects.length;
+  document.getElementById("teacher-count").textContent = teachers.length;
+  document.getElementById("room-count").textContent    = rooms.length;
+}
+
+/* ---- ASSIGN DROPDOWNS ---- */
+function refreshAssignDropdowns() {
+  const selSub = document.getElementById("sel-subject");
+  selSub.innerHTML = '<option value="">-- Select Subject --</option>';
+  subjects.forEach(s => {
+    selSub.innerHTML += `<option value="${s.id}">${s.name} (${s.code})</option>`;
+  });
+
+  const selTch = document.getElementById("sel-teacher");
+  selTch.innerHTML = '<option value="">-- Select Teacher --</option>';
+  teachers.forEach(t => {
+    selTch.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+  });
+
+  const selRoom = document.getElementById("sel-room");
+  selRoom.innerHTML = '<option value="">-- Select Room --</option>';
+  rooms.forEach(r => {
+    selRoom.innerHTML += `<option value="${r.id}">${r.name} (Cap: ${r.capacity})</option>`;
+  });
+}
+
+/* ---- ASSIGN SLOT with CONFLICT DETECTION ---- */
+function assignSlot() {
+  const day       = document.getElementById("sel-day").value;
+  const time      = document.getElementById("sel-time").value;
+  const subjectId = document.getElementById("sel-subject").value;
+  const teacherId = document.getElementById("sel-teacher").value;
+  const roomId    = document.getElementById("sel-room").value;
+  const conflictBox = document.getElementById("conflict-box");
+  conflictBox.style.display = "none";
+
+  if (!day || !time || !subjectId || !teacherId || !roomId) {
+    alert("Please fill all fields before assigning!");
+    return;
+  }
+
+  let conflictMsg = "";
+
+  const teacherConflict = slots.find(s => s.day === day && s.time === time && s.teacherId === teacherId);
+  if (teacherConflict) {
+    const t = teachers.find(t => t.id == teacherId);
+    conflictMsg += `&#9888; Teacher conflict: ${t ? t.name : ""} already assigned at ${day} ${time}. `;
+  }
+
+  const roomConflict = slots.find(s => s.day === day && s.time === time && s.roomId === roomId);
+  if (roomConflict) {
+    const r = rooms.find(r => r.id == roomId);
+    conflictMsg += `&#9888; Room conflict: ${r ? r.name : ""} already booked at ${day} ${time}.`;
+  }
+
+  if (conflictMsg) {
+    conflictBox.innerHTML     = conflictMsg;
+    conflictBox.style.display = "block";
+    return;
+  }
+
+  slots.push({ day, time, subjectId, teacherId, roomId });
+  renderAssignedSlots();
+
+  document.getElementById("sel-day").value     = "";
+  document.getElementById("sel-time").value    = "";
+  document.getElementById("sel-subject").value = "";
+  document.getElementById("sel-teacher").value = "";
+  document.getElementById("sel-room").value    = "";
+}
+
+/* ---- RENDER ASSIGNED SLOTS ---- */
+function renderAssignedSlots() {
+  const container = document.getElementById("assigned-list");
+  if (slots.length === 0) {
+    container.innerHTML = '<p class="empty-msg">No slots assigned yet.</p>';
+    return;
+  }
+  container.innerHTML = slots.map((slot, i) => {
+    const sub = subjects.find(s => s.id == slot.subjectId);
+    const tch = teachers.find(t => t.id == slot.teacherId);
+    const rm  = rooms.find(r => r.id == slot.roomId);
+    return `
+      <div class="slot-item">
+        <div class="slot-info">
+          <span class="slot-day">${slot.day}</span>
+          <span class="slot-time">${slot.time}</span>
+          <span class="slot-pill pill-sub">${sub ? sub.name : "N/A"}</span>
+          <span class="slot-pill pill-tch">${tch ? tch.name : "N/A"}</span>
+          <span class="slot-pill pill-room">${rm ? rm.name : "N/A"}</span>
+        </div>
+        <button class="btn btn-danger-sm" onclick="deleteSlot(${i})">&#10005; Remove</button>
+      </div>`;
+  }).join("");
+}
+
+function deleteSlot(index) {
+  if (!confirm("Remove this slot?")) return;
+  slots.splice(index, 1);
+  renderAssignedSlots();
+}
+
+function clearAllSlots() {
+  if (slots.length === 0) return;
+  if (!confirm("Clear ALL assigned slots?")) return;
+  slots = [];
+  renderAssignedSlots();
+}
+
+/* ---- GENERATE TIMETABLE ---- */
+const DAYS  = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const TIMES = [
+  "9:00 - 10:00","10:00 - 11:00","11:00 - 12:00",
+  "12:00 - 1:00 (Lunch)",
+  "1:00 - 2:00","2:00 - 3:00","3:00 - 4:00","4:00 - 5:00"
+];
+
+function generateTimetable() {
+  const className = document.getElementById("class-name").value.trim() || "Class";
+  const output    = document.getElementById("timetable-output");
+
+  if (slots.length === 0) {
+    output.innerHTML = '<p class="empty-msg" style="text-align:center;padding:3rem 0;">No slots assigned yet. Go to <strong>Assign Slots</strong> tab first.</p>';
+    return;
+  }
+
+  let html = `
+    <div class="tt-class-title">Timetable — ${className}</div>
+    <div class="tt-date">Generated on: ${new Date().toLocaleDateString("en-IN", { weekday:"long", year:"numeric", month:"long", day:"numeric" })}</div>
+    <div style="overflow-x:auto;">
+    <table class="tt-table">
+      <thead>
+        <tr>
+          <th>Time / Day</th>
+          ${DAYS.map(d => `<th>${d}</th>`).join("")}
+        </tr>
+      </thead>
+      <tbody>`;
+
+  TIMES.forEach(time => {
+    html += "<tr>";
+    html += `<td class="time-cell">${time}</td>`;
+    DAYS.forEach(day => {
+      if (time === "12:00 - 1:00 (Lunch)") {
+        html += `<td class="lunch-cell">Lunch Break</td>`;
+        return;
+      }
+      const slot = slots.find(s => s.day === day && s.time === time);
+      if (slot) {
+        const sub = subjects.find(s => s.id == slot.subjectId);
+        const tch = teachers.find(t => t.id == slot.teacherId);
+        const rm  = rooms.find(r => r.id == slot.roomId);
+        html += `
+          <td>
+            <div class="tt-slot">
+              <div class="tt-slot-sub">${sub ? sub.name : "N/A"}</div>
+              <div class="tt-slot-tch">&#128105; ${tch ? tch.name : "N/A"}</div>
+              <div class="tt-slot-room">&#127981; ${rm ? rm.name : "N/A"}</div>
+            </div>
+          </td>`;
+      } else {
+        html += `<td><span class="tt-free">Free</span></td>`;
+      }
+    });
+    html += "</tr>";
+  });
+
+  html += "</tbody></table></div>";
+  output.innerHTML = html;
+}
+
+/* ---- PRINT ---- */
+function printTimetable() {
+  generateTimetable();
+  window.print();
+}
+
+/* ---- EXPORT CSV ---- */
+function exportCSV() {
+  if (slots.length === 0) { alert("No slots to export!"); return; }
+  let csv = "Day,Time,Subject,Subject Code,Teacher,Room,Room Capacity\n";
+  const order  = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const sorted = [...slots].sort((a, b) =>
+    order.indexOf(a.day) - order.indexOf(b.day) ||
+    TIMES.indexOf(a.time) - TIMES.indexOf(b.time)
+  );
+  sorted.forEach(slot => {
+    const sub = subjects.find(s => s.id == slot.subjectId);
+    const tch = teachers.find(t => t.id == slot.teacherId);
+    const rm  = rooms.find(r => r.id == slot.roomId);
+    csv += [
+      slot.day, `"${slot.time}"`,
+      sub ? sub.name : "N/A", sub ? sub.code : "N/A",
+      tch ? tch.name : "N/A",
+      rm ? rm.name : "N/A", rm ? rm.capacity : "N/A"
+    ].join(",") + "\n";
+  });
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href     = url;
+  a.download = "timetable.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ---- SAMPLE DATA ---- */
+function loadSampleData() {
+  subjects = [
+    { id:1, name:"Mathematics",      code:"MATH101" },
+    { id:2, name:"Data Structures",  code:"CS201"   },
+    { id:3, name:"DBMS",             code:"CS301"   },
+    { id:4, name:"Operating Systems",code:"CS302"   },
+    { id:5, name:"Web Technology",   code:"CS401"   },
+  ];
+  teachers = [
+    { id:10, name:"Dr. Sharma",  subject:"Mathematics"       },
+    { id:11, name:"Prof. Gupta", subject:"Data Structures"   },
+    { id:12, name:"Dr. Singh",   subject:"DBMS"              },
+    { id:13, name:"Prof. Verma", subject:"Operating Systems" },
+    { id:14, name:"Ms. Mishra",  subject:"Web Technology"    },
+  ];
+  rooms = [
+    { id:20, name:"Room 101", capacity:"60" },
+    { id:21, name:"Room 102", capacity:"50" },
+    { id:22, name:"Lab 1",    capacity:"30" },
+    { id:23, name:"Lab 2",    capacity:"30" },
+  ];
+  slots = [
+    { day:"Monday",    time:"9:00 - 10:00",   subjectId:1, teacherId:10, roomId:20 },
+    { day:"Monday",    time:"10:00 - 11:00",  subjectId:2, teacherId:11, roomId:21 },
+    { day:"Monday",    time:"2:00 - 3:00",    subjectId:3, teacherId:12, roomId:20 },
+    { day:"Tuesday",   time:"9:00 - 10:00",   subjectId:4, teacherId:13, roomId:21 },
+    { day:"Tuesday",   time:"11:00 - 12:00",  subjectId:5, teacherId:14, roomId:22 },
+    { day:"Wednesday", time:"10:00 - 11:00",  subjectId:1, teacherId:10, roomId:20 },
+    { day:"Wednesday", time:"3:00 - 4:00",    subjectId:2, teacherId:11, roomId:22 },
+    { day:"Thursday",  time:"9:00 - 10:00",   subjectId:3, teacherId:12, roomId:21 },
+    { day:"Thursday",  time:"2:00 - 3:00",    subjectId:5, teacherId:14, roomId:23 },
+    { day:"Friday",    time:"10:00 - 11:00",  subjectId:4, teacherId:13, roomId:20 },
+    { day:"Friday",    time:"11:00 - 12:00",  subjectId:1, teacherId:10, roomId:21 },
+    { day:"Saturday",  time:"9:00 - 10:00",   subjectId:5, teacherId:14, roomId:22 },
+  ];
+  renderSubjects();
+  renderTeachers();
+  renderRooms();
+  renderAssignedSlots();
+  updateBadges();
+  alert("Sample data loaded! Go to Timetable tab and click Generate.");
+}
+
+/* ---- ON PAGE LOAD ---- */
+window.onload = function() {
+  renderSubjects();
+  renderTeachers();
+  renderRooms();
+  updateBadges();
+  const infoBox = document.getElementById("info-box");
+  if (infoBox) {
+    infoBox.innerHTML += ` &nbsp;<button class="btn btn-outline"
+      style="font-size:12px;padding:4px 10px;" onclick="loadSampleData()">
+      &#9654; Load Sample Data</button>`;
+  }
+};
+  </script>
+</body>
+</html>
